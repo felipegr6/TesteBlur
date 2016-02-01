@@ -26,9 +26,17 @@ public class PieChartView extends View implements Runnable {
     private int maxAngle;
     private int percent;
     private int points;
+    private int velocity;
+
     private String color;
     private String alphaColor;
-    private int velocity;
+
+    private RectF rectF1;
+    private RectF rectF2;
+    private Path path;
+    private Paint textPercent;
+    private Paint imagePercent;
+    private Paint textPoints;
 
     public PieChartView(Context context) {
         super(context);
@@ -54,6 +62,13 @@ public class PieChartView extends View implements Runnable {
 
         validateItems();
 
+        textPercent = new Paint();
+        imagePercent = new Paint();
+        rectF1 = new RectF();
+        rectF2 = new RectF();
+        path = new Path();
+        textPoints = new Paint();
+
     }
 
     @Override
@@ -70,7 +85,6 @@ public class PieChartView extends View implements Runnable {
         RectF outerRect = new RectF(500 - outerRadius, 500 - outerRadius, 500 + outerRadius, 500 + outerRadius);
         RectF innerRect = new RectF(500 - innerRadius, 500 - innerRadius, 500 + innerRadius, 500 + innerRadius);
 
-        Path path = new Path();
         path.arcTo(outerRect, arcOffset + angle, arcSweep);
         path.arcTo(innerRect, arcOffset + arcSweep + angle, -arcSweep);
         path.close();
@@ -81,15 +95,13 @@ public class PieChartView extends View implements Runnable {
 
         Paint border = new Paint();
         border.setStyle(Paint.Style.STROKE);
+        border.setColor(Color.parseColor(ColorsEnum.LIGHT_GRAY.getColors()));
         border.setStrokeWidth(2);
         canvas.drawPath(path, border);
 
         Paint pBlur = new Paint(Paint.ANTI_ALIAS_FLAG);
         Paint pSolido = new Paint(Paint.ANTI_ALIAS_FLAG);
         Paint pSolidoTransp = new Paint(Paint.ANTI_ALIAS_FLAG);
-
-        RectF rectF1 = new RectF();
-        RectF rectF2 = new RectF();
 
         // Arcos
         rectF1.set(300, 300, 700, 700);
@@ -99,6 +111,7 @@ public class PieChartView extends View implements Runnable {
 
         pSolidoTransp.setColor(Color.TRANSPARENT);
         pSolidoTransp.setStyle(Paint.Style.STROKE);
+        pSolidoTransp.setColor(Color.parseColor(ColorsEnum.LIGHT_GRAY.getColors()));
         pSolidoTransp.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
         pSolidoTransp.setStrokeWidth(2);
 
@@ -116,9 +129,6 @@ public class PieChartView extends View implements Runnable {
         pBlur.setColor(Color.parseColor(alphaColor));
         canvas.drawArc(rectF1, 270, angle, true, pBlur);
 
-        Paint textPercent = new Paint();
-        Paint imagePercent = new Paint();
-
         textPercent.setColor(Color.parseColor(color));
         imagePercent.setColor(Color.parseColor(color));
         textPercent.setTextSize(Measure.getPixelsFromDP(getContext(), 40));
@@ -128,15 +138,13 @@ public class PieChartView extends View implements Runnable {
         canvas.drawText(percent + "", 430, 475, textPercent);
         canvas.drawText("%", 560, 475, imagePercent);
 
-        Paint textPoints = new Paint();
-
         textPoints.setColor(Color.parseColor(color));
         textPoints.setTextSize(Measure.getPixelsFromDP(getContext(), 19));
         textPoints.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
 
         canvas.drawText(pointsFormatted(), 430, 590, textPoints);
         textPoints.setTextSize(Measure.getPixelsFromDP(getContext(), 17));
-        canvas.drawText("pontos", 425, 635, textPoints);
+        canvas.drawText(getContext().getString(R.string.lbl_pontos), 425, 635, textPoints);
 
         if (angle < maxAngle)
             postDelayed(this, 10);
