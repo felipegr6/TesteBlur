@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="PieChartView">
+        <attr name="pieChartColor" format="string" />
+        <attr name="pieChartAlphaColor" format="string" />
+        <attr name="percent" format="integer" />
+        <attr name="points" format="integer" />
+        <attr name="velocity" format="integer" />
+    </declare-styleable>
+</resources>
