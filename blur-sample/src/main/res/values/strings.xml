@@ -3,4 +3,9 @@
     <string name="msg_invalid_percent">The percent parameter is invalid.\nPermitted range: from 0 to 100.</string>
     <string name="msg_invalid_velocity">The velocity parameter is invalid.\n Permitted range: from 1 to 5.</string>
     <string name="lbl_pontos">pontos</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="btnNoFragment">Sem Fragmento</string>
+    <string name="btnWithFragment">Com Fragmento</string>
 </resources>
